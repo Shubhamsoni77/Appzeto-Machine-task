@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { Task } from '../types';
-import { cleanData } from '../utils/dataCleaner';
 
-const STORAGE_KEY = 'appzeto-board-state';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 interface BoardState {
@@ -48,7 +46,7 @@ export function useBoard() {
   }, []);
 
   const resetBoard = () => {
-    loadInitialData(true);
+    loadInitialData();
   };
 
   const saveTasks = (newTasks: Task[], pushHistory = true) => {
