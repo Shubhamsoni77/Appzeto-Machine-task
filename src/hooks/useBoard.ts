@@ -3,6 +3,7 @@ import type { Task } from '../types';
 import { cleanData } from '../utils/dataCleaner';
 
 const STORAGE_KEY = 'appzeto-board-state';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 interface BoardState {
   tasks: Task[];
@@ -18,7 +19,7 @@ export function useBoard() {
   // Loading the board from API
   const loadInitialData = async () => {
     try {
-      const res = await fetch('http://localhost:3000/api/tasks');
+      const res = await fetch(`${API_URL}/tasks`);
       const data = await res.json();
       
       // Revive dates
@@ -66,7 +67,7 @@ export function useBoard() {
     if (!state) return;
     
     try {
-      await fetch('http://localhost:3000/api/tasks', {
+      await fetch(`${API_URL}/tasks`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newTask)
@@ -92,7 +93,7 @@ export function useBoard() {
     if (!state) return;
     
     try {
-      await fetch(`http://localhost:3000/api/tasks/${updatedTask.id}`, {
+      await fetch(`${API_URL}/tasks/${updatedTask.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedTask)
@@ -108,7 +109,7 @@ export function useBoard() {
     if (!state) return;
     
     try {
-      await fetch(`http://localhost:3000/api/tasks/${taskId}`, {
+      await fetch(`${API_URL}/tasks/${taskId}`, {
         method: 'DELETE'
       });
       const newTasks = state.tasks.filter(t => t.id !== taskId);
